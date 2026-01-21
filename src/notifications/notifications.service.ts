@@ -24,7 +24,7 @@ export class NotificationsService {
     });
   }
 
-  // method foe mark as read 
+  // method forr mark as read 
 
   async markAsRead(id: string, userId: string) {
     const notification = await this.repo.findOne({

@@ -68,7 +68,7 @@ export class TicketsService {
   }
 
 
-  // updateStatus it will used by the agent   
+  // updateStatus it will used by the agent  
 
   async updateStatus(id: string, status: TicketStatus, jwtUser: any) {
     const ticket = await this.repo.findOne({
@@ -97,6 +97,8 @@ export class TicketsService {
 
     return updated;
   }
+
+
 // reassign the ticket 
   async reassign(id: string, assigneeId: string, jwtUser: any) {
     const ticket = await this.repo.findOne({ where: { id } });
@@ -115,6 +117,9 @@ export class TicketsService {
 
     return updated;
   }
+
+
+
   //closing the request 
   async closeBySupervisor(id: string, jwtUser: any) {
     const ticket = await this.repo.findOne({ where: { id } });

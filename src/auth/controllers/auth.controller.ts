@@ -5,9 +5,12 @@ import { LoginDto } from '../dto/login.dto';
 import { RefreshTokenDto } from '../dto/refresh-token.dto';
 import { SignupDto } from '../dto/signup.dto';
 import { ApiBody, ApiOperation } from '@nestjs/swagger';
+
+
 @Public()
 @Controller('auth')
 export class AuthController {
+
   constructor(private auth: AuthService) {}
 
   @ApiOperation({
@@ -22,6 +25,7 @@ export class AuthController {
       },
     },
   })
+  
   // signup / create new customer object 
   @Post('signup')
   signup(@Body() dto: SignupDto) {
@@ -50,7 +54,7 @@ export class AuthController {
   }
 
   // Refresh token for all users
-  
+
   @Post('refresh')
   refresh(@Body() dto: RefreshTokenDto) {
     return this.auth.refresh(dto.refreshToken);
