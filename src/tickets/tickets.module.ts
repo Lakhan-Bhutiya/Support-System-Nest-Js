@@ -4,7 +4,7 @@ import { Ticket } from './entities/ticket.entity';
 import { TicketsService } from './services/tickets.service';
 import { TicketsController } from './controllers/tickets.controller';
 import { UsersModule } from 'src/users/users.module';
-import { AuditInterceptor } from '../audit/interceptors/audit.interceptor';
+
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuditModule } from 'src/audit/audit.module';
 @Module({
@@ -14,11 +14,7 @@ import { AuditModule } from 'src/audit/audit.module';
     AuditModule,
   ],
   
-  providers: [TicketsService,TicketsService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: AuditInterceptor,
-    },],
+  providers: [TicketsService,TicketsService,],
   controllers: [TicketsController],
 })
 export class TicketsModule {}

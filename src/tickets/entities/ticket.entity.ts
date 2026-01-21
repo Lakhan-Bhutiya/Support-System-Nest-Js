@@ -47,11 +47,15 @@ import {
     @Column({ default: false })
     isEscalated: boolean;
     
+    @Column({ default: 0 })
+    escalationCount: number;
+    
     @Column({ type: 'jsonb', default: [] })
     previousAssignees: string[];
   
     @ManyToOne(() => User)
     creator: User;
+    
     
     @ManyToOne(() => User, { nullable: true })
     assignee: User | null;    

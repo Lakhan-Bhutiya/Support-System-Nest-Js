@@ -22,6 +22,7 @@ export class AuthController {
       },
     },
   })
+  // signup / create new customer object 
   @Post('signup')
   signup(@Body() dto: SignupDto) {
     return this.auth.signup(dto);
@@ -39,11 +40,16 @@ export class AuthController {
       },
     },
   })
-  
+
+
+  // Login  for any user
+
   @Post('login')
   login(@Body() dto: LoginDto) {
     return this.auth.login(dto.email, dto.password);
   }
+
+  // Refresh token for all users
   
   @Post('refresh')
   refresh(@Body() dto: RefreshTokenDto) {

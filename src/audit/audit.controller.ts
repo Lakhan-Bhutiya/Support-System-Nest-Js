@@ -4,8 +4,8 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../users/entities/user.entity';
 import { AuditService } from './audit.service';
 @Roles(UserRole.SUPERVISOR)
-@ApiBearerAuth('access-token ')
 @ApiTags('Audit (Supervisor)')
+@ApiBearerAuth('access-token')
 @Controller('audit')
 export class AuditController {
   constructor(private readonly audit: AuditService) {}

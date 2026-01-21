@@ -66,14 +66,21 @@ export class TicketsService {
       .leftJoinAndSelect('t.assignee', 'assignee')
       .getMany();
   }
+
+
   // updateStatus it will used by the agent   
+
   async updateStatus(id: string, status: TicketStatus, jwtUser: any) {
     const ticket = await this.repo.findOne({
       where: { id },
       relations: ['assignee'],
     });
 
+
     if (!ticket) throw new NotFoundException('Ticket not found');
+    if (ticket.status === TicketStatus.RESOLVED) {
+      throw new BadRequestException('Ticket already resolved');
+    }
 
     if (!ticket.assignee || ticket.assignee.id !== jwtUser.sub) {
       throw new ForbiddenException('Not your ticket');
