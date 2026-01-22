@@ -27,7 +27,7 @@ export class WatchdogService {
     await runner.startTransaction();
 
     try {
-      // 🔴 IMPORTANT: do NOT filter by isEscalated
+      //  IMPORTANT: do NOT filter by isEscalated
       const tickets = await runner.manager.find(Ticket, {
         where: { status: TicketStatus.IN_PROGRESS },
         relations: ['assignee'],
@@ -39,12 +39,12 @@ export class WatchdogService {
         // Skip if SLA not breached
         if (ticket.deadline >= now) continue;
 
-        // 🛡️ Ensure previousAssignees is always an array
+        //  Ensure previousAssignees is always an array
         if (!Array.isArray(ticket.previousAssignees)) {
           ticket.previousAssignees = [];
         }
 
-        // 🛡️ Always exclude current assignee
+        //  Always exclude current assignee
         if (
           ticket.assignee &&
           !ticket.previousAssignees.includes(ticket.assignee.id)
@@ -52,7 +52,7 @@ export class WatchdogService {
           ticket.previousAssignees.push(ticket.assignee.id);
         }
 
-        // 🟥 SECOND (or more) FAILURE → STOP AUTO ASSIGN
+        //  SECOND (or more) FAILURE → STOP AUTO ASSIGN
         if (ticket.previousAssignees.length >= 2) {
           ticket.priority = TicketPriority.URGENT;
           ticket.assignee = null;
@@ -77,10 +77,10 @@ export class WatchdogService {
             );
           }
 
-          continue; // ⛔ stop auto reassignment
+          continue; //  stop auto reassignment
         }
 
-        // 🟨 FIRST FAILURE → AUTO ESCALATION
+        //  FIRST FAILURE → AUTO ESCALATION
         ticket.isEscalated = true; // historical flag only
         ticket.priority = TicketPriority.URGENT;
 
@@ -88,7 +88,7 @@ export class WatchdogService {
           ticket.previousAssignees,
         );
 
-        ticket.assignee = newAgent ?? null;
+        // ticket.assignee = newAgent ?? null; //??
         ticket.status = newAgent
           ? TicketStatus.IN_PROGRESS
           : TicketStatus.OPEN;

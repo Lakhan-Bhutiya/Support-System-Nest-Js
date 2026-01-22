@@ -30,23 +30,27 @@ export class UsersService {
   }
   // Find agent who have low task (Used in Ticket )
   async findBestAgent(excludedIds: string[]) {
-    return this.repo
-      .createQueryBuilder('u')
-      .leftJoin('ticket', 't', 't.assigneeId = u.id AND t.status = :status', {
-        status: 'IN_PROGRESS',
-      })
-      .where('u.role = :role', { role: 'AGENT' })
-      .andWhere('u.isActive = true')
-      .andWhere(
-        excludedIds.length
-          ? 'u.id NOT IN (:...excludedIds)'
-          : '1=1',
-        { excludedIds },
-      )
-      .groupBy('u.id')
-      .orderBy('COUNT(t.id)', 'ASC')
-      .addOrderBy('u.createdAt', 'ASC')
-      .getOne();
+    const qb = this.repo
+  .createQueryBuilder('u')
+  .leftJoin(
+    'ticket',
+    't',
+    't.assigneeId = u.id AND t.status = :status',
+    { status: 'IN_PROGRESS' },
+  )
+  .where('u.role = :role', { role: 'AGENT' })
+  .andWhere('u.isActive = true');
+
+if (excludedIds.length > 0) {
+  qb.andWhere('u.id NOT IN (:...excludedIds)', { excludedIds });
+}
+
+return qb
+  .groupBy('u.id')
+  .orderBy('COUNT(t.id)', 'ASC')
+  .addOrderBy('u.createdAt', 'ASC')
+  .getOne();
+
   }
   //create agent 
   async createAgent(dto: CreateAgentDto) {

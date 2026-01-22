@@ -44,5 +44,4 @@ getAgents() {
   return this.usersService.getAgentsWithLoad();
 }
 
-
 }
